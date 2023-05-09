@@ -1,8 +1,8 @@
 import 'package:bahanku/api/constant.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/post.dart';
-import 'package:bahanku/services/post_service.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/post_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/component_widgets/component_widgets.dart';
 import 'package:bahanku/view/forum/comment_screen.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';

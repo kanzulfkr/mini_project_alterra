@@ -15,3 +15,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// <uses-permission android:name="android.permission.INTERNET" />

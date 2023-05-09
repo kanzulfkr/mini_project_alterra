@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/comment.dart';
-import 'package:bahanku/services/comment_service.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/comment_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/login/login.dart';
 import 'package:bahanku/api/constant.dart';
 

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:bahanku/api/constant.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/post.dart';
-import 'package:bahanku/services/post_service.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/post_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PostForm extends StatefulWidget {

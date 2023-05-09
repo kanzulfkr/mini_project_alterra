@@ -2,7 +2,7 @@ import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/user.dart';
 import 'package:bahanku/view/component_widgets/component_widgets.dart';
 import 'package:bahanku/view/main_page.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

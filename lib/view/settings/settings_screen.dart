@@ -1,23 +1,25 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:bahanku/api/constant.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/user.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/login/login.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'button.dart';
+import 'widgets/button.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsScreenState extends State<SettingsScreen> {
   User? user;
   bool loading = true;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

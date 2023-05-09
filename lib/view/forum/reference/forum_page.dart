@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:bahanku/api/constant.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/post.dart';
-import 'package:bahanku/services/post_service.dart';
-import 'package:bahanku/services/user_service.dart';
+import 'package:bahanku/api/post_service.dart';
+import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';
 import 'package:bahanku/view/forum/reference/comment.dart';
 import 'package:bahanku/view/login/login.dart';
@@ -110,7 +110,7 @@ class _ForumPageState extends State<ForumPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget forumList() {
+    Widget postCard() {
       return _loading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -318,6 +318,12 @@ class _ForumPageState extends State<ForumPage> {
         padding: const EdgeInsets.only(top: 50),
         height: 100,
         width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.5,
+            color: Colors.grey.shade400,
+          ),
+        ),
         child: const Center(
           child: Text(
             'News Feed',
@@ -331,7 +337,7 @@ class _ForumPageState extends State<ForumPage> {
       return Column(
         children: [
           titleText(),
-          forumList(),
+          postCard(),
         ],
       );
     }

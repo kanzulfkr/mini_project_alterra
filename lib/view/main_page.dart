@@ -1,9 +1,8 @@
 import 'package:bahanku/view/detail/detail_screen.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';
-import 'package:bahanku/view/forum/forum_screen.dart';
 import 'package:bahanku/view/forum/reference/forum_page.dart';
 import 'package:bahanku/view/home/home.screen.dart';
-import 'package:bahanku/view/settings/reference/settings_page.dart';
+import 'package:bahanku/view/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,10 +17,9 @@ class _MainPageState extends State<MainPage> {
 
   final _screens = [
     const HomeScreen(),
-    // const DetailScreen(),
-    const ForumScreen(),
+    const DetailScreen(),
     const ForumPage(),
-    const SettingsPage()
+    const SettingsScreen()
   ];
 
   @override
@@ -78,12 +76,12 @@ class _MainPageState extends State<MainPage> {
               margin:
                   EdgeInsets.symmetric(vertical: _selectedIndex == 3 ? 7 : 5),
               child: Image.asset(
-                'assets/icons/user.png',
+                'assets/icons/setting.png',
                 width: 25,
                 color: _selectedIndex == 3 ? Colors.blueAccent : Colors.grey,
               ),
             ),
-            label: 'Profile',
+            label: 'Settings',
           ),
         ],
       );
