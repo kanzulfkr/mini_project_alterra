@@ -1,11 +1,11 @@
 import 'package:bahanku/view/component_widgets/component_widgets.dart';
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/comment/comment.dart';
 import 'package:bahanku/api/comment_service.dart';
 import 'package:bahanku/api/user_service.dart';
-import 'package:bahanku/view/login/login.dart';
 import 'package:bahanku/constant/app_services.dart';
 
 class CommentPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _CommentPageState extends State<CommentPage> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -46,7 +46,6 @@ class _CommentPageState extends State<CommentPage> {
     }
   }
 
-  // create comment
   void _createComment() async {
     ApiResponse response =
         await createComment(widget.postId ?? 0, _txtCommentController.text);
@@ -57,7 +56,7 @@ class _CommentPageState extends State<CommentPage> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -69,7 +68,6 @@ class _CommentPageState extends State<CommentPage> {
     }
   }
 
-  // edit comment
   void _editComment() async {
     ApiResponse response =
         await editComment(_editCommentId, _txtCommentController.text);
@@ -81,7 +79,7 @@ class _CommentPageState extends State<CommentPage> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -90,7 +88,6 @@ class _CommentPageState extends State<CommentPage> {
     }
   }
 
-  // Delete comment
   void _deleteComment(int commentId) async {
     ApiResponse response = await deleteComment(commentId);
 
@@ -99,7 +96,7 @@ class _CommentPageState extends State<CommentPage> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -201,6 +198,7 @@ class _CommentPageState extends State<CommentPage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Comments'),
         centerTitle: true,

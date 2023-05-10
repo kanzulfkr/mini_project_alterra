@@ -37,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Widget headerWidget() {
       return Container(
         width: double.maxFinite,
-        height: 120,
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        height: 90,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
             Text(
@@ -151,54 +151,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     Widget trendingPrice() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade300,
-            width: 1.5,
-          ),
-        ),
-        child: Obx(
-          () {
-            if (trendingPriceController.loading == true) {
-              // print(trendingPriceController.mainTrendingPriceList.length);
-              return Column(
-                children: const [
-                  SizedBox(height: 150),
-                  Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            }
+      return Obx(
+        () {
+          if (trendingPriceController.loading == true) {
             return Column(
+              children: const [
+                SizedBox(height: 150),
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            );
+          }
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade50,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(30),
+              ),
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(left: 20, top: 20),
+                  padding: EdgeInsets.only(left: 20, top: 30, bottom: 10),
                   child: Text(
                     'Trending price',
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                SizedBox(
                   width: double.maxFinite,
                   height: 50,
                   child: TabBar(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
                     controller: tabController,
                     labelColor: Colors.blueAccent,
                     unselectedLabelColor: Colors.grey[400],
+                    indicatorSize: TabBarIndicatorSize.tab,
                     tabs: [
-                      // ListView.builder(
-                      //   itemCount: trendingPriceController
-                      //       .mainTrendingPriceList.length,
-                      //   itemBuilder: (context, index) {
-                      //     return Tab(
-                      //         text: trendingPriceController
-                      //             .mainTrendingPriceList[index].name);
-                      //   },
-                      // ),
                       Tab(
                         text: trendingPriceController
                             .mainTrendingPriceList[1].name,
@@ -216,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 SizedBox(
                   width: double.maxFinite,
-                  height: 345,
+                  height: 355,
                   child: TabBarView(
                     controller: tabController,
                     children: [
@@ -287,9 +278,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
       // return Container(
       //   width: double.maxFinite,
@@ -302,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       children: [
         Container(
           color: Colors.grey.shade200,
-          height: 370,
+          height: 815,
           child: Stack(
             children: [
               Container(
@@ -315,19 +306,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   headerWidget(),
                   newsSlider(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  trendingPrice(),
                 ],
               ),
             ],
           ),
         ),
-        trendingPrice(),
-        const SizedBox(
-          height: 20,
-        )
       ],
     );
   }

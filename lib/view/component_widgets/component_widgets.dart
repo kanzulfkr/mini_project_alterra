@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 // --- input decoration
 InputDecoration kInputDecoration(String label) {
   return InputDecoration(
+    fillColor: Colors.red,
     labelText: label,
-    contentPadding: const EdgeInsets.all(10),
+    contentPadding: const EdgeInsets.all(20),
     border: const OutlineInputBorder(
       borderSide: BorderSide(width: 1, color: Colors.black),
     ),

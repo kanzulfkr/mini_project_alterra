@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:bahanku/view/component_widgets/component_widgets.dart';
-import 'package:bahanku/view/login/login.dart';
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bahanku/constant/app_services.dart';
@@ -14,7 +16,7 @@ class PostForm extends StatefulWidget {
   final Post? post;
   final String? title;
 
-  PostForm({this.post, this.title});
+  const PostForm({super.key, this.post, this.title});
 
   @override
   State<PostForm> createState() => _PostFormState();
@@ -45,7 +47,7 @@ class _PostFormState extends State<PostForm> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -65,7 +67,7 @@ class _PostFormState extends State<PostForm> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -88,17 +90,18 @@ class _PostFormState extends State<PostForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('${widget.title}'),
       ),
       body: _loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : ListView(
               children: [
                 widget.post != null
-                    ? SizedBox()
+                    ? const SizedBox()
                     : Container(
                         width: MediaQuery.of(context).size.width,
                         height: 200,
@@ -110,7 +113,7 @@ class _PostFormState extends State<PostForm> {
                                     fit: BoxFit.cover)),
                         child: Center(
                           child: IconButton(
-                            icon: Icon(Icons.image,
+                            icon: const Icon(Icons.image,
                                 size: 50, color: Colors.black38),
                             onPressed: () {
                               getImage();
@@ -121,35 +124,40 @@ class _PostFormState extends State<PostForm> {
                 Form(
                   key: _formKey,
                   child: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: TextFormField(
                       controller: _txtControllerBody,
                       keyboardType: TextInputType.multiline,
                       maxLines: 9,
                       validator: (val) =>
                           val!.isEmpty ? 'Post body is required' : null,
-                      decoration: InputDecoration(
-                          hintText: "Post body...",
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black38))),
+                      decoration: const InputDecoration(
+                        hintText: "Post body...",
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(width: 1, color: Colors.black38),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: kTextButton('Post', () {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        _loading = !_loading;
-                      });
-                      if (widget.post == null) {
-                        _createPost();
-                      } else {
-                        _editPost(widget.post!.id ?? 0);
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: kTextButton(
+                    'Post',
+                    () {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _loading = !_loading;
+                        });
+                        if (widget.post == null) {
+                          _createPost();
+                        } else {
+                          _editPost(widget.post!.id ?? 0);
+                        }
                       }
-                    }
-                  }),
+                    },
+                  ),
                 )
               ],
             ),

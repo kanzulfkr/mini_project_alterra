@@ -2,9 +2,8 @@ import 'package:bahanku/constant/app_services.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/view/main_page.dart';
 import 'package:bahanku/api/user_service.dart';
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
-
-import '../login/login.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -16,7 +15,8 @@ class _LoadingState extends State<Loading> {
     String token = await getToken();
     if (token == '') {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Login()), (route) => false);
+          MaterialPageRoute(builder: (context) => OnBoarding()),
+          (route) => false);
     } else {
       ApiResponse response = await getUserDetail();
       if (response.error == null) {
@@ -25,7 +25,8 @@ class _LoadingState extends State<Loading> {
             (route) => false);
       } else if (response.error == unauthorized) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Login()), (route) => false);
+            MaterialPageRoute(builder: (context) => OnBoarding()),
+            (route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('${response.error}'),

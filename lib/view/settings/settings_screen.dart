@@ -1,13 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:bahanku/constant/app_services.dart';
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/user/user.dart';
 import 'package:bahanku/api/user_service.dart';
-import 'package:bahanku/view/login/login.dart';
-
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'widgets/button.dart';
@@ -36,7 +33,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  // get user detail
   void getUser() async {
     ApiResponse response = await getUserDetail();
     if (response.error == null) {
@@ -49,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => Login(),
+                  builder: (context) => const OnBoarding(),
                 ),
                 (route) => false)
           });
@@ -62,7 +58,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  //update profile
   void updateProfile() async {
     ApiResponse response =
         await updateUser(txtNameController.text, getStringImage(_imageFile));
@@ -78,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -98,6 +93,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    onAlertButtonPressed(context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Center(
+              child: Text("Are you sure?"),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.w500),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  TextButton(
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.w500),
+                    ),
+                    onPressed: () {
+                      logout().then(
+                        (value) => {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const OnBoarding(),
+                              ),
+                              (route) => false)
+                        },
+                      );
+                    },
+                  )
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return loading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -207,6 +248,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   iconButton: 'assets/icons/about.png',
                 ),
                 const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 InkWell(
                   child: Container(
                     width: 200,
@@ -228,15 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   onTap: () {
-                    logout().then(
-                      (value) => {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ),
-                            (route) => false)
-                      },
-                    );
+                    onAlertButtonPressed(context);
                   },
                 ),
               ],

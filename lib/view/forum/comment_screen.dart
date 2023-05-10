@@ -1,18 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bahanku/models/api_response.dart';
 import 'package:bahanku/models/comment/comment.dart';
 import 'package:bahanku/api/comment_service.dart';
 import 'package:bahanku/api/user_service.dart';
-import 'package:bahanku/view/login/login.dart';
 import 'package:bahanku/constant/app_services.dart';
-
 import '../component_widgets/component_widgets.dart';
 
 class CommentScreen extends StatefulWidget {
   final int? postId;
 
-  CommentScreen({this.postId});
+  const CommentScreen({super.key, this.postId});
 
   @override
   _CommentScreenState createState() => _CommentScreenState();
@@ -23,9 +24,8 @@ class _CommentScreenState extends State<CommentScreen> {
   bool _loading = true;
   int userId = 0;
   int _editCommentId = 0;
-  TextEditingController _txtCommentController = TextEditingController();
+  final TextEditingController _txtCommentController = TextEditingController();
 
-  // Get comments
   Future<void> _getComments() async {
     userId = await getUserId();
     ApiResponse response = await getComments(widget.postId ?? 0);
@@ -38,7 +38,7 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -47,7 +47,6 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  // create comment
   void _createComment() async {
     ApiResponse response =
         await createComment(widget.postId ?? 0, _txtCommentController.text);
@@ -58,7 +57,7 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -70,7 +69,6 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  // edit comment
   void _editComment() async {
     ApiResponse response =
         await editComment(_editCommentId, _txtCommentController.text);
@@ -82,7 +80,7 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -91,7 +89,6 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  // Delete comment
   void _deleteComment(int commentId) async {
     ApiResponse response = await deleteComment(commentId);
 
@@ -100,7 +97,7 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (response.error == unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const OnBoarding()),
                 (route) => false)
           });
     } else {
@@ -119,113 +116,112 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: const Text('Comments)'),
       ),
       body: _loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Column(
               children: [
                 Expanded(
-                    child: RefreshIndicator(
-                        onRefresh: () {
-                          return _getComments();
-                        },
-                        child: ListView.builder(
-                            itemCount: _commentsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              Comment comment = _commentsList[index];
-                              return Container(
-                                padding: EdgeInsets.all(10),
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: Colors.black26,
-                                            width: 0.5))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration: BoxDecoration(
-                                                  image: comment.user!.image !=
-                                                          null
-                                                      ? DecorationImage(
-                                                          image: NetworkImage(
-                                                              '${comment.user!.image}'),
-                                                          fit: BoxFit.cover)
-                                                      : null,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  color: Colors.blueGrey),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              '${comment.user!.name}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16),
-                                            )
+                  child: RefreshIndicator(
+                    onRefresh: () {
+                      return _getComments();
+                    },
+                    child: ListView.builder(
+                      itemCount: _commentsList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Comment comment = _commentsList[index];
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: Colors.black26, width: 0.5))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                            image: comment.user!.image != null
+                                                ? DecorationImage(
+                                                    image: NetworkImage(
+                                                        '${comment.user!.image}'),
+                                                    fit: BoxFit.cover)
+                                                : null,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: Colors.blueGrey),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${comment.user!.name}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  ),
+                                  comment.user!.id == userId
+                                      ? PopupMenuButton(
+                                          child: const Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              child: Icon(
+                                                Icons.more_vert,
+                                                color: Colors.black,
+                                              )),
+                                          itemBuilder: (context) => [
+                                            const PopupMenuItem(
+                                                value: 'edit',
+                                                child: Text('Edit')),
+                                            const PopupMenuItem(
+                                                value: 'delete',
+                                                child: Text('Delete'))
                                           ],
-                                        ),
-                                        comment.user!.id == userId
-                                            ? PopupMenuButton(
-                                                child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 10),
-                                                    child: Icon(
-                                                      Icons.more_vert,
-                                                      color: Colors.black,
-                                                    )),
-                                                itemBuilder: (context) => [
-                                                  PopupMenuItem(
-                                                      child: Text('Edit'),
-                                                      value: 'edit'),
-                                                  PopupMenuItem(
-                                                      child: Text('Delete'),
-                                                      value: 'delete')
-                                                ],
-                                                onSelected: (val) {
-                                                  if (val == 'edit') {
-                                                    setState(() {
-                                                      _editCommentId =
-                                                          comment.id ?? 0;
-                                                      _txtCommentController
-                                                              .text =
-                                                          comment.comment ?? '';
-                                                    });
-                                                  } else {
-                                                    _deleteComment(
-                                                        comment.id ?? 0);
-                                                  }
-                                                },
-                                              )
-                                            : SizedBox()
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text('${comment.comment}')
-                                  ],
-                                ),
-                              );
-                            }))),
+                                          onSelected: (val) {
+                                            if (val == 'edit') {
+                                              setState(() {
+                                                _editCommentId =
+                                                    comment.id ?? 0;
+                                                _txtCommentController.text =
+                                                    comment.comment ?? '';
+                                              });
+                                            } else {
+                                              _deleteComment(comment.id ?? 0);
+                                            }
+                                          },
+                                        )
+                                      : const SizedBox()
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('${comment.comment}')
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
                     border: Border(
                         top: BorderSide(color: Colors.black26, width: 0.5)),
                   ),
@@ -238,7 +234,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         onPressed: () {
                           if (_txtCommentController.text.isNotEmpty) {
                             setState(() {

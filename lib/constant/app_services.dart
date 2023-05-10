@@ -1,5 +1,5 @@
 // ----- STRINGS ------
-const baseURL = 'http://192.168.18.93:8000';
+const baseURL = 'http://192.168.193.93:8000';
 const loginURL = '$baseURL/api/login';
 const registerURL = '$baseURL/api/register';
 const logoutURL = '$baseURL/api/logout';

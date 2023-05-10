@@ -5,7 +5,7 @@ import 'package:bahanku/api/post_service.dart';
 import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';
 import 'package:bahanku/view/forum/widgets/comment.dart';
-import 'package:bahanku/view/login/login.dart';
+import 'package:bahanku/view/onboarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 class ForumScreen extends StatefulWidget {
@@ -20,7 +20,6 @@ class _ForumScreenState extends State<ForumScreen> {
   int userId = 0;
   bool _loading = true;
 
-  // get all posts
   Future<void> retrievePosts() async {
     userId = await getUserId();
     ApiResponse response = await getPosts();
@@ -37,7 +36,7 @@ class _ForumScreenState extends State<ForumScreen> {
         (value) => {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Login(),
+                builder: (context) => const OnBoarding(),
               ),
               (route) => false)
         },
@@ -61,7 +60,7 @@ class _ForumScreenState extends State<ForumScreen> {
         (value) => {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Login(),
+                builder: (context) => const OnBoarding(),
               ),
               (route) => false)
         },
@@ -75,7 +74,6 @@ class _ForumScreenState extends State<ForumScreen> {
     }
   }
 
-  // post like dislik
   void _handlePostLikeDislike(int postId) async {
     ApiResponse response = await likeUnlikePost(postId);
 
@@ -86,7 +84,7 @@ class _ForumScreenState extends State<ForumScreen> {
         (value) => {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Login(),
+                builder: (context) => const OnBoarding(),
               ),
               (route) => false)
         },
@@ -108,6 +106,26 @@ class _ForumScreenState extends State<ForumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget titleText() {
+      return Container(
+        padding: const EdgeInsets.only(top: 50),
+        height: 100,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.5,
+            color: Colors.grey.shade400,
+          ),
+        ),
+        child: const Center(
+          child: Text(
+            'News Feed',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+          ),
+        ),
+      );
+    }
+
     Widget postCard() {
       return _loading
           ? const Center(
@@ -184,7 +202,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                         const PopupMenuItem(
                                           value: 'delete',
                                           child: Text('Delete'),
-                                        )
+                                        ),
                                       ],
                                       child: Icon(
                                         Icons.more_vert,
@@ -193,19 +211,69 @@ class _ForumScreenState extends State<ForumScreen> {
                                       onSelected: (val) {
                                         if (val == 'edit') {
                                           Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PostForm(
-                                                        title: 'Edit Post',
-                                                        post: post,
-                                                      )))
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (context) => PostForm(
+                                                title: 'Edit Post',
+                                                post: post,
+                                              ),
+                                            ),
+                                          )
                                               .then((value) {
                                             setState(() {
                                               retrievePosts();
                                             });
                                           });
                                         } else {
-                                          _handleDeletePost(post.id ?? 0);
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Center(
+                                                  child: Text("Are you sure?"),
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      TextButton(
+                                                          child: const Text(
+                                                            'Cancel',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop()),
+                                                      TextButton(
+                                                        child: const Text(
+                                                          'Confirm',
+                                                          style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        onPressed: () {
+                                                          _handleDeletePost(
+                                                              post.id ?? 0);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         }
                                       },
                                     )
@@ -238,12 +306,9 @@ class _ForumScreenState extends State<ForumScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Image.asset('assets/icons/love.png'),
                               InkWell(
                                 child: Image.asset(
-                                  post.selfLiked == true
-                                      ? 'assets/icons/love.png'
-                                      : 'assets/icons/love.png',
+                                  'assets/icons/love.png',
                                   scale: 1.2,
                                   color: post.selfLiked == true
                                       ? Colors.red
@@ -277,13 +342,11 @@ class _ForumScreenState extends State<ForumScreen> {
                                       ),
                                     ),
                                   )
-                                      .then(
-                                    (value) {
-                                      setState(() {
-                                        retrievePosts();
-                                      });
-                                    },
-                                  );
+                                      .then((value) {
+                                    setState(() {
+                                      retrievePosts();
+                                    });
+                                  });
                                 },
                               ),
                               Container(
@@ -311,38 +374,11 @@ class _ForumScreenState extends State<ForumScreen> {
             );
     }
 
-    Widget titleText() {
-      return Container(
-        padding: const EdgeInsets.only(top: 50),
-        height: 100,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: Colors.grey.shade400,
-          ),
-        ),
-        child: const Center(
-          child: Text(
-            'News Feed',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-          ),
-        ),
-      );
-    }
-
-    Widget contentForumPage() {
-      return Column(
-        children: [
-          titleText(),
-          postCard(),
-        ],
-      );
-    }
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: contentForumPage(),
+    return Column(
+      children: [
+        titleText(),
+        postCard(),
+      ],
     );
   }
 }
