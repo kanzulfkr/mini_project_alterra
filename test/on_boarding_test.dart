@@ -15,15 +15,6 @@ void main() {
           expect(find.byType(LoginPage), findsOneWidget);
         },
       );
-      testWidgets('Find text', (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(home: OnBoarding()));
-        expect(find.text('Sign In'), findsNWidgets(3));
-        expect(find.text('Sign Up'), findsOneWidget);
-        expect(find.text('Email'), findsOneWidget);
-        expect(find.text('Password'), findsOneWidget);
-        expect(find.text('Forgot password'), findsOneWidget);
-        expect(find.text('Not me'), findsOneWidget);
-      });
       testWidgets(
         'Find widget',
         (WidgetTester tester) async {
@@ -35,21 +26,31 @@ void main() {
           expect(find.byType(Tab), findsNWidgets(3));
         },
       );
-      testWidgets(
-        'Find text Style Not me',
-        (WidgetTester tester) async {
-          await tester.pumpWidget(const MaterialApp(home: OnBoarding()));
-          final text = tester.widget<Text>(find.text('Not me'));
-          expect(text.style!.color, Colors.grey);
-          expect(text.style!.fontSize, 15);
-        },
-      );
+      testWidgets('Find text', (WidgetTester tester) async {
+        await tester.pumpWidget(const MaterialApp(home: OnBoarding()));
+        expect(find.text('Sign In'), findsNWidgets(3));
+        expect(find.text('Sign Up'), findsOneWidget);
+        expect(find.text('Email'), findsOneWidget);
+        expect(find.text('Password'), findsOneWidget);
+        expect(find.text('Forgot password'), findsOneWidget);
+        expect(find.text('Not me'), findsOneWidget);
+      });
+
       testWidgets(
         'Find text Style Forgot password',
         (WidgetTester tester) async {
           await tester.pumpWidget(const MaterialApp(home: OnBoarding()));
           final text = tester.widget<Text>(find.text('Forgot password'));
           expect(text.style!.color, Colors.blueAccent);
+          expect(text.style!.fontSize, 15);
+        },
+      );
+      testWidgets(
+        'Find text Style Not me',
+        (WidgetTester tester) async {
+          await tester.pumpWidget(const MaterialApp(home: OnBoarding()));
+          final text = tester.widget<Text>(find.text('Not me'));
+          expect(text.style!.color, Colors.grey);
           expect(text.style!.fontSize, 15);
         },
       );
