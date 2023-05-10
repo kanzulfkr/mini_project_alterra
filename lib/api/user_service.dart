@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:bahanku/api/constant.dart';
+import 'package:bahanku/constant/app_services.dart';
 import 'package:bahanku/models/api_response.dart';
-import 'package:bahanku/models/user.dart';
+import 'package:bahanku/models/user/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

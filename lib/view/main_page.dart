@@ -1,6 +1,6 @@
 import 'package:bahanku/view/detail/detail_screen.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';
-import 'package:bahanku/view/forum/reference/forum_page.dart';
+import 'package:bahanku/view/forum/forum_screen.dart';
 import 'package:bahanku/view/home/home.screen.dart';
 import 'package:bahanku/view/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +17,9 @@ class _MainPageState extends State<MainPage> {
 
   final _screens = [
     const HomeScreen(),
+    // const NewSlider(),
     const DetailScreen(),
-    const ForumPage(),
+    const ForumScreen(),
     const SettingsScreen()
   ];
 
@@ -114,9 +115,11 @@ class _MainPageState extends State<MainPage> {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: customNavBar(),
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: _screens,
+        body: SafeArea(
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: _screens,
+          ),
         ),
       );
     }

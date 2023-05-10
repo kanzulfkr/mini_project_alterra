@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:bahanku/models/api_response.dart';
-import 'package:bahanku/models/post.dart';
+import 'package:bahanku/models/post/post.dart';
 import 'package:bahanku/api/user_service.dart';
 import 'package:http/http.dart' as http;
 
-import '../api/constant.dart';
+import '../constant/app_services.dart';
 
 // get all posts
 Future<ApiResponse> getPosts() async {

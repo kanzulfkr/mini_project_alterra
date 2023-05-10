@@ -1,77 +1,88 @@
+import 'package:bahanku/models/trending_price/details_trending_price.dart';
 import 'package:flutter/material.dart';
 
 class Commodity extends StatelessWidget {
   const Commodity({
     Key? key,
-    required this.image,
-    required this.title,
-    required this.price,
+    required this.detailTrendingPrice,
   }) : super(key: key);
 
-  final String image;
-  final String title;
-  final String price;
+  final DetailTrendingPrice detailTrendingPrice;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 15.0, left: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(color: Colors.grey.shade300, spreadRadius: 1),
+        ],
+      ),
       child: SizedBox(
         width: double.maxFinite,
         height: 100,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              width: 110,
-              height: 110,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                'assets/images/commodities/${detailTrendingPrice.image}',
+                width: 100,
+                height: 80,
+                fit: BoxFit.contain,
               ),
             ),
-
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(8.0),
-            //   child: Image.asset(
-            //     image,
-            //     width: 100,
-            //     height: 80,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            const SizedBox(width: 20),
-            SizedBox(
+            Container(
+              padding: const EdgeInsets.only(left: 10),
               width: 130,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    detailTrendingPrice.name,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    '$price/kg',
+                    detailTrendingPrice.price,
                     style:
                         const TextStyle(fontSize: 16, color: Colors.blueAccent),
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              width: 100,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 30),
+                Image.asset(
+                  'assets/icons/${detailTrendingPrice.indicatorprice}',
+                  cacheHeight: 20,
+                  cacheWidth: 20,
+                ),
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              width: 80,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(''),
-                  const SizedBox(height: 15),
                   Text(
-                    '$price/kg',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[400]),
+                    detailTrendingPrice.time,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[500]),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    '${detailTrendingPrice.percent} %     ',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[500]),
                   ),
                 ],
               ),

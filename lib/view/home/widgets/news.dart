@@ -22,7 +22,7 @@ class News extends StatelessWidget {
         children: <Widget>[
           Container(
             width: 240,
-            height: 267,
+            height: 200,
             decoration: BoxDecoration(
               color: Colors.grey[300],
               borderRadius: const BorderRadius.all(

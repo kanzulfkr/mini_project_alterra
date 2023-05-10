@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:bahanku/models/api_response.dart';
-import 'package:bahanku/models/comment.dart';
+import 'package:bahanku/models/comment/comment.dart';
 import 'package:http/http.dart' as http;
 
-import '../api/constant.dart';
+import '../constant/app_services.dart';
 import 'user_service.dart';
 
 // Get post comments

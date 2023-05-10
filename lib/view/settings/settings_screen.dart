@@ -2,9 +2,9 @@
 
 import 'dart:io';
 
-import 'package:bahanku/api/constant.dart';
+import 'package:bahanku/constant/app_services.dart';
 import 'package:bahanku/models/api_response.dart';
-import 'package:bahanku/models/user.dart';
+import 'package:bahanku/models/user/user.dart';
 import 'package:bahanku/api/user_service.dart';
 import 'package:bahanku/view/login/login.dart';
 
@@ -103,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: CircularProgressIndicator(),
           )
         : Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -209,8 +209,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 10),
                 InkWell(
                   child: Container(
-                    width: double.maxFinite,
-                    height: 60,
+                    width: 200,
+                    height: 40,
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.all(
@@ -221,7 +221,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Text(
                         'Logout',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Colors.white),
                       ),

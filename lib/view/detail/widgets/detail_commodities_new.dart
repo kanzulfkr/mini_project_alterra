@@ -66,56 +66,6 @@ class DetailsCommodityNew extends StatelessWidget {
             ),
           ],
         ),
-        // child: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         SizedBox(
-        //           width: 70,
-        //           child: Text(abcCommodity.calorie,
-        //               style: TextStyle(fontSize: 16)),
-        //         ),
-        //         SizedBox(
-        //           width: 70,
-        //           child: Text(abcCommodity.carbo,
-        //               style: TextStyle(fontSize: 16)),
-        //         ),
-        //         SizedBox(
-        //           width: 70,
-        //           child: Text(abcCommodity.protein,
-        //               style: TextStyle(fontSize: 16)),
-        //         ),
-        //       ],
-        //     ),
-        //     const SizedBox(height: 5),
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //       children: [
-        //         SizedBox(
-        //           width: 60,
-        //           child: Text('Kalori',
-        //               style:
-        //                   TextStyle(color: Colors.grey[500], fontSize: 16)),
-        //         ),
-        //         SizedBox(
-        //           width: 80,
-        //           child: Text('Karbohidrat',
-        //               style:
-        //                   TextStyle(color: Colors.grey[500], fontSize: 16)),
-        //         ),
-        //         SizedBox(
-        //           width: 60,
-        //           child: Text('Protein',
-        //               style:
-        //                   TextStyle(color: Colors.grey[500], fontSize: 16)),
-        //         ),
-        //       ],
-        //     ),
-        //   ],
-        // ),
       );
     }
 
@@ -153,19 +103,22 @@ class DetailsCommodityNew extends StatelessWidget {
         height: 400,
         decoration: const BoxDecoration(),
         child: ListView(
-            children: abcCommodity.details
-                .map((item) => Container(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                      ),
-                      child: Price(
-                        detailCommodity: item,
-                      ),
-                    ))
-                .toList()),
+          children: abcCommodity.details
+              .map(
+                (item) => Container(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Price(
+                    detailCommodity: item,
+                  ),
+                ),
+              )
+              .toList(),
+        ),
       );
     }
 

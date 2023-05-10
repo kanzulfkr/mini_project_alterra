@@ -1,4 +1,4 @@
-import 'package:bahanku/view_model/commodity/commodity_controller.dart';
+import 'package:bahanku/view_model/commodity_controller.dart';
 import 'package:bahanku/view/detail/widgets/category_new.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
         width: double.maxFinite,
-        padding: const EdgeInsets.fromLTRB(20, 60, 20, 35),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,11 +50,11 @@ class _DetailScreenState extends State<DetailScreen> {
                 )
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 5),
             Text(
               '$d $yMmm',
               style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 17,
                   fontWeight: FontWeight.w500,
                   color: Colors.white),
             ),
@@ -66,7 +66,7 @@ class _DetailScreenState extends State<DetailScreen> {
     Widget categoriesCard() {
       return SizedBox(
         // padding: EdgeInsets.only(top: 20),
-        height: 620,
+        height: 630,
         width: double.maxFinite,
         child: Obx(
           () {
@@ -101,17 +101,17 @@ class _DetailScreenState extends State<DetailScreen> {
       );
     }
 
-    Widget contentPage() {
-      return Column(
-        children: [
-          titleCard(),
-          categoriesCard(),
-        ],
-      );
-    }
-
-    return Scaffold(
-      body: contentPage(),
+    // Widget contentPage() {
+    return Column(
+      children: [
+        titleCard(),
+        categoriesCard(),
+      ],
     );
+    // }
+
+    // return Scaffold(
+    //   body: contentPage(),
+    // );
   }
 }

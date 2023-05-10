@@ -1,11 +1,10 @@
-import 'package:bahanku/api/constant.dart';
+import 'package:bahanku/constant/app_services.dart';
 import 'package:bahanku/models/api_response.dart';
-import 'package:bahanku/models/post.dart';
+import 'package:bahanku/models/post/post.dart';
 import 'package:bahanku/api/post_service.dart';
 import 'package:bahanku/api/user_service.dart';
-import 'package:bahanku/view/component_widgets/component_widgets.dart';
-import 'package:bahanku/view/forum/comment_screen.dart';
 import 'package:bahanku/view/forum/create_post_screen.dart';
+import 'package:bahanku/view/forum/widgets/comment.dart';
 import 'package:bahanku/view/login/login.dart';
 import 'package:flutter/material.dart';
 
@@ -93,7 +92,6 @@ class _ForumScreenState extends State<ForumScreen> {
         },
       );
     } else {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${response.error}'),
@@ -110,150 +108,241 @@ class _ForumScreenState extends State<ForumScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _loading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : RefreshIndicator(
-            onRefresh: () {
-              return retrievePosts();
-            },
-            child: ListView.builder(
-              itemCount: _postList.length,
-              itemBuilder: (BuildContext context, int index) {
-                Post post = _postList[index];
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 38,
-                                  height: 38,
+    Widget postCard() {
+      return _loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SizedBox(
+              height: 660,
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return retrievePosts();
+                },
+                child: ListView.builder(
+                  itemCount: _postList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Post post = _postList[index];
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.blueAccent,
+                                radius: 30,
+                                child: Container(
+                                  width: 55,
+                                  height: 55,
                                   decoration: BoxDecoration(
-                                      image: post.user!.image != null
-                                          ? DecorationImage(
-                                              image: NetworkImage(
-                                                  '${post.user!.image}'),
-                                            )
-                                          : null,
-                                      borderRadius: BorderRadius.circular(25),
-                                      color: Colors.amber),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  '${post.user!.name}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17),
-                                )
-                              ],
-                            ),
-                          ),
-                          post.user!.id == userId
-                              ? PopupMenuButton(
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.more_vert,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem(
-                                      child: Text('Edit'),
-                                      value: 'edit',
-                                    ),
-                                    const PopupMenuItem(
-                                      child: Text('Delete'),
-                                      value: 'delete',
-                                    )
-                                  ],
-                                  onSelected: (val) {
-                                    if (val == 'edit') {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => PostForm(
-                                            title: 'Edit Post',
-                                            post: post,
+                                    borderRadius: BorderRadius.circular(90),
+                                    image: post.user!.image != null
+                                        ? DecorationImage(
+                                            image: NetworkImage(
+                                              '${post.user!.image}',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const DecorationImage(
+                                            image: NetworkImage(
+                                                defaultProfilePicture),
+                                            fit: BoxFit.cover,
+                                            scale: 0.5,
                                           ),
-                                        ),
-                                      );
-                                    } else {
-                                      _handleDeletePost(post.id ?? 0);
-                                    }
-                                  },
-                                )
-                              : const SizedBox()
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text('${post.body}'),
-                      post.image != null
-                          ? Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 180,
-                              margin: const EdgeInsets.only(top: 5),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage('${post.image}'),
-                                    fit: BoxFit.cover),
-                              ),
-                            )
-                          : SizedBox(height: post.image != null ? 0 : 10),
-                      Row(
-                        children: [
-                          kLikeAndComment(
-                            post.likesCount ?? 0,
-                            post.selfLiked == true
-                                ? Icons.favorite
-                                : Icons.favorite_outline,
-                            post.selfLiked == true
-                                ? Colors.red
-                                : Colors.black54,
-                            () {
-                              _handlePostLikeDislike(post.id ?? 0);
-                            },
-                          ),
-                          Container(
-                            height: 25,
-                            width: 0.5,
-                            color: Colors.black38,
-                          ),
-                          kLikeAndComment(
-                            post.commentsCount ?? 0,
-                            Icons.sms_outlined,
-                            Colors.black54,
-                            () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => CommentScreen(
-                                    postId: post.id,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              );
-                            },
+                              ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 270,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${post.user!.name}',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    const Text(
+                                      '8h',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              post.user!.id == userId
+                                  ? PopupMenuButton(
+                                      position: PopupMenuPosition.under,
+                                      itemBuilder: (context) => [
+                                        const PopupMenuItem(
+                                          value: 'edit',
+                                          child: Text('Edit'),
+                                        ),
+                                        const PopupMenuItem(
+                                          value: 'delete',
+                                          child: Text('Delete'),
+                                        )
+                                      ],
+                                      child: Icon(
+                                        Icons.more_vert,
+                                        color: Colors.grey[700],
+                                      ),
+                                      onSelected: (val) {
+                                        if (val == 'edit') {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PostForm(
+                                                        title: 'Edit Post',
+                                                        post: post,
+                                                      )))
+                                              .then((value) {
+                                            setState(() {
+                                              retrievePosts();
+                                            });
+                                          });
+                                        } else {
+                                          _handleDeletePost(post.id ?? 0);
+                                        }
+                                      },
+                                    )
+                                  : const SizedBox()
+                            ],
                           ),
-                        ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 0.5,
-                        color: Colors.black26,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
+                        ),
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                          child: Text(
+                            '${post.body}',
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                        ),
+                        post.image != null
+                            ? Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage('${post.image}'),
+                                      fit: BoxFit.cover),
+                                ),
+                              )
+                            : SizedBox(height: post.image != null ? 0 : 10),
+                        Container(
+                          width: double.maxFinite,
+                          padding: const EdgeInsets.only(
+                              left: 20, top: 8, bottom: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Image.asset('assets/icons/love.png'),
+                              InkWell(
+                                child: Image.asset(
+                                  post.selfLiked == true
+                                      ? 'assets/icons/love.png'
+                                      : 'assets/icons/love.png',
+                                  scale: 1.2,
+                                  color: post.selfLiked == true
+                                      ? Colors.red
+                                      : Colors.grey[800],
+                                ),
+                                onTap: () {
+                                  _handlePostLikeDislike(post.id ?? 0);
+                                },
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 8),
+                                width: 60,
+                                child: Text(
+                                  post.likesCount != 0
+                                      ? '${post.likesCount}'
+                                      : '',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              InkWell(
+                                child: Image.asset(
+                                  'assets/icons/comment.png',
+                                  scale: 1.2,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .push(
+                                    MaterialPageRoute(
+                                      builder: (context) => CommentPage(
+                                        postId: post.id,
+                                      ),
+                                    ),
+                                  )
+                                      .then(
+                                    (value) {
+                                      setState(() {
+                                        retrievePosts();
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 8),
+                                width: 60,
+                                child: Text(
+                                  post.commentsCount != 0
+                                      ? '${post.commentsCount}'
+                                      : '',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              Image.asset(
+                                'assets/icons/share.png',
+                                scale: 1.2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
+    }
+
+    Widget titleText() {
+      return Container(
+        padding: const EdgeInsets.only(top: 50),
+        height: 100,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.5,
+            color: Colors.grey.shade400,
+          ),
+        ),
+        child: const Center(
+          child: Text(
+            'News Feed',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+          ),
+        ),
+      );
+    }
+
+    Widget contentForumPage() {
+      return Column(
+        children: [
+          titleText(),
+          postCard(),
+        ],
+      );
+    }
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: contentForumPage(),
+    );
   }
 }
