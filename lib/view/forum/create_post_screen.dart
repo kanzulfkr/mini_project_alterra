@@ -121,44 +121,82 @@ class _PostFormState extends State<PostForm> {
                           ),
                         ),
                       ),
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      controller: _txtControllerBody,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 9,
-                      validator: (val) =>
-                          val!.isEmpty ? 'Post body is required' : null,
-                      decoration: const InputDecoration(
-                        hintText: "Post body...",
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 1, color: Colors.black38),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _txtControllerBody,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 9,
+                          validator: (val) =>
+                              val!.isEmpty ? 'Post body is required' : null,
+                          decoration: const InputDecoration(
+                            hintText: "Post body...",
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.black38),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        child: Container(
+                          height: 60,
+                          decoration: const BoxDecoration(
+                            color: Colors.blueAccent,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              _loading = !_loading;
+                            });
+                            if (widget.post == null) {
+                              _createPost();
+                            } else {
+                              _editPost(widget.post!.id ?? 0);
+                            }
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: kTextButton(
-                    'Post',
-                    () {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          _loading = !_loading;
-                        });
-                        if (widget.post == null) {
-                          _createPost();
-                        } else {
-                          _editPost(widget.post!.id ?? 0);
-                        }
-                      }
-                    },
-                  ),
-                )
+
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                //   child: kTextButton(
+                //     'Post',
+                //     () {
+                //       if (_formKey.currentState!.validate()) {
+                //         setState(() {
+                //           _loading = !_loading;
+                //         });
+                //         if (widget.post == null) {
+                //           _createPost();
+                //         } else {
+                //           _editPost(widget.post!.id ?? 0);
+                //         }
+                //       }
+                //     },
+                //   ),
+                // )
               ],
             ),
     );

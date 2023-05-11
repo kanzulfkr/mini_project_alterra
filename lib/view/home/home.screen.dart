@@ -88,11 +88,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   //   fit: BoxFit.fill,
                   // ),
                   Positioned(
-                    top: 115.0,
+                    // top: 115.0,
+                    top: 35,
                     left: 27.5,
                     child: Container(
                       width: 270,
-                      height: 90,
+                      // height: 90,
+                      height: 150,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 12),
                       decoration: const BoxDecoration(
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               fontSize: 16,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 2,
+                            maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Row(

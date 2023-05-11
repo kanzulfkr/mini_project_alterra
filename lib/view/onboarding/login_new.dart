@@ -128,17 +128,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: () {
-                        logout().then(
-                          (value) => {
-                            if (formkey.currentState!.validate())
-                              {
-                                setState(() {
-                                  loading = true;
-                                  _loginUser();
-                                })
-                              }
-                          },
-                        );
+                        if (formkey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                            _loginUser();
+                          });
+                        }
                       },
                     ),
             ],
